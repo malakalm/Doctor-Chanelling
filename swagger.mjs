@@ -19,7 +19,7 @@ const options = {
         description: 'Doctor appointment routes',
       },
     ],
-    servers: [{ url: 'http://localhost:3000' }],
+    servers: [{ url: 'https://api.pixelperfect.lk' }],
   },
   apis: ['./src/route/*.mjs'],
 };
