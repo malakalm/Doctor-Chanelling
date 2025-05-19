@@ -4,10 +4,7 @@ import getDBConnection from '../db.mjs';
 export const createAppoinment = async (req, res) => {
   const { doctorid, dttappoinment, userid, venueid  } = req.body;
 
-//   // Validate input
-//   if (!email || !password || !name) {
-//     return res.status(400).json({ message: 'Email, password, and name are required' });
-//   }
+
 
   try {
     const sequelize = getDBConnection();
