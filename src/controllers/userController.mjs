@@ -1,4 +1,3 @@
-//import User from '../Models/user.mjs';
 import getDBConnection from '../db.mjs';
 
 
