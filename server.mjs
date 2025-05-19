@@ -2,12 +2,14 @@ import express from 'express';
 import api from './src/route/api.mjs';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger.mjs'; // Add .js extension when using ES Modules
+import cors from 'cors'; // ✅ Add this line
 
 
 
 
 
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 
