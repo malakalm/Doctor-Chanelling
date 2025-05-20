@@ -16,6 +16,8 @@ import {
          getDoctorVenues
         } from '../controllers/doctorController.mjs';
 
+import { upload } from '../middleware/multer.js';
+
 
 /**
  * @swagger
@@ -162,6 +164,7 @@ router.post('/UserSignup', signupUser);
  */
 router.put('/updateFCM', updateFCM);
 
+
 /**
  * @swagger
  * /updateUserDetails:
@@ -172,14 +175,14 @@ router.put('/updateFCM', updateFCM);
  *     parameters:
  *       - in: query
  *         name: id
+ *         required: true
  *         schema:
  *           type: integer
- *         required: true
  *         description: User ID
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -191,7 +194,8 @@ router.put('/updateFCM', updateFCM);
  *                 description: User's address
  *               image:
  *                 type: string
- *                 description: URL or file path for user's profile image
+ *                 format: binary
+ *                 description: User's profile image file
  *     responses:
  *       200:
  *         description: User details updated successfully
@@ -202,7 +206,7 @@ router.put('/updateFCM', updateFCM);
  *       500:
  *         description: Database error
  */
-router.put('/updateUserDetails', updateUserDetails);
+router.put('/updateUserDetails', upload.single('image'), updateUserDetails );
 
 /**
  * @swagger
