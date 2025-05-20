@@ -186,11 +186,55 @@ export const updateFCM = async (req, res) => {
   }
 };
 
-export const updateUserDetails = async (req, res) => {
-  const { id } = req.query;  // User ID from query parameters
-  const { name, address, image } = req.body;  // New user details from the request body
+// export const updateUserDetails = async (req, res) => {
+//   const { id } = req.query;  // User ID from query parameters
+//   const { name, address, image } = req.body;  // New user details from the request body
 
-  // Validate input
+//   // Validate input
+//   if (!id || (!name && !address && !image)) {
+//     return res.status(400).json({ message: 'User ID and at least one field (name, address, or image) are required' });
+//   }
+
+//   try {
+//     const sequelize = getDBConnection();
+//     await sequelize.authenticate();
+
+//     // Check if the user exists
+//     const [user] = await sequelize.query(
+//       'SELECT * FROM users WHERE id = ?',
+//       {
+//         replacements: [id],
+//       }
+//     );
+
+//     if (user.length === 0) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     // Prepare the query to update the user
+//     const updateQuery = `
+//       UPDATE users SET
+//         name = ?,
+//         address =?,
+//         image = ?
+//       WHERE id = ?`;
+
+//     // Execute the update query
+//     await sequelize.query(updateQuery, {
+//       replacements: [name, address, image, id],
+//     });
+
+//     res.status(200).json({ message: 'User details updated successfully' });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Database error', error: err.message });
+//   }
+// };
+
+export const updateUserDetails = async (req, res) => {
+  const { id } = req.query;
+  const { name, address } = req.body;
+  const image = req.file ? req.file.filename : null;
+
   if (!id || (!name && !address && !image)) {
     return res.status(400).json({ message: 'User ID and at least one field (name, address, or image) are required' });
   }
@@ -199,36 +243,44 @@ export const updateUserDetails = async (req, res) => {
     const sequelize = getDBConnection();
     await sequelize.authenticate();
 
-    // Check if the user exists
     const [user] = await sequelize.query(
       'SELECT * FROM users WHERE id = ?',
-      {
-        replacements: [id],
-      }
+      { replacements: [id] }
     );
 
     if (user.length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Prepare the query to update the user
-    const updateQuery = `
-      UPDATE users SET
-        name = ?,
-        address =?,
-        image = ?
-      WHERE id = ?`;
+    // Build fields and replacements dynamically
+    const fields = [];
+    const values = [];
 
-    // Execute the update query
-    await sequelize.query(updateQuery, {
-      replacements: [name, address, image, id],
-    });
+    if (name) {
+      fields.push('name = ?');
+      values.push(name);
+    }
+    if (address) {
+      fields.push('address = ?');
+      values.push(address);
+    }
+    if (image) {
+      fields.push('image = ?');
+      values.push(image);
+    }
+
+    values.push(id); // for WHERE clause
+
+    const updateQuery = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
+
+    await sequelize.query(updateQuery, { replacements: values });
 
     res.status(200).json({ message: 'User details updated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Database error', error: err.message });
   }
 };
+
 
 export const deleteUserAccount = async (req, res) => {
   const { id } = req.query;
