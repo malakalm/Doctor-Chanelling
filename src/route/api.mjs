@@ -12,11 +12,19 @@ import { getAllUsers,
         } from '../controllers/userController.mjs';
 
 import { 
+         getpaymentMethordDetails
+        } from '../controllers/paymentmethorController.mjs';
+
+import { 
          getAvailableDoctors,
          getDoctorVenues
         } from '../controllers/doctorController.mjs';
 
 import { upload } from '../middleware/multer.js';
+
+import { 
+         getsubscriptionsdDetails
+        } from '../controllers/subscriptionsController.mjs';
 
 
 /**
@@ -267,7 +275,7 @@ router.delete('/deleteUser', deleteUserAccount);
  *       500:
  *         description: Database error
  */
-router.put('/setSubplane', resetPassword);
+router.put('/resetPassword', resetPassword);
 
 /**
  * @swagger
@@ -339,5 +347,44 @@ router.get('/getAvailableDoctors', getAvailableDoctors);
 router.get('/getDoctorVenues', getDoctorVenues);
 
 
+/**
+ * @swagger
+ * /getpaymentMethordDetails:
+ *   get:
+ *     tags:
+ *        - paymentMethord
+ *     summary: Get getpaymentMethordDetails by ID
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: Get a user
+ */
+router.get('/getpaymentMethordDetails', getpaymentMethordDetails);
+
+/**
+ * @swagger
+ * /getsubscriptionsdDetails:
+ *   get:
+ *     tags:
+ *        - Subscription
+ *     summary: Get getsubscriptionsdDetails by ID
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: Get a user
+ */
+router.get('/getsubscriptionsdDetails', getsubscriptionsdDetails);
 
 export default router;

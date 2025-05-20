@@ -1,14 +1,25 @@
 import getDBConnection from '../db.mjs';
+import crypto from 'crypto';
 
 
 
 export const getAllUsers = async (req, res) => {
   try {
+   
+    const appId = 'SPT4119084CC4B0CFC44A';
+    const currency = 'LKR';
+    const amount = '100.00';
+    const hashSalt = 'S9BL119084CC4B0CFC46B'; // provided by OnePay
+
+    const input = appId + currency + amount + hashSalt;
+
+    const hash = crypto.createHash('sha256').update(input).digest('hex');
+   
     const sequelize = getDBConnection();
     await sequelize.authenticate(); // connect only when this endpoint is hit
 
     const [results] = await sequelize.query('SELECT * FROM users');
-    res.status(200).json({ message: 'User list', data: results });
+    res.status(200).json({ message: 'User list', data: results ,hash:hash});
   } catch (err) {
     res.status(500).json({ error: 'Database error', details: err.message });
   }
