@@ -23,7 +23,8 @@ import {
 import { upload } from '../middleware/multer.js';
 
 import { 
-         getsubscriptionsdDetails
+         getsubscriptionsdDetails,
+         CreateUserSubcription
         } from '../controllers/subscriptionsController.mjs';
 
 
@@ -171,7 +172,6 @@ router.post('/UserSignup', signupUser);
  *         description: FCM token already exists
  */
 router.put('/updateFCM', updateFCM);
-
 
 /**
  * @swagger
@@ -346,7 +346,6 @@ router.get('/getAvailableDoctors', getAvailableDoctors);
  */
 router.get('/getDoctorVenues', getDoctorVenues);
 
-
 /**
  * @swagger
  * /getpaymentMethordDetails:
@@ -386,5 +385,42 @@ router.get('/getpaymentMethordDetails', getpaymentMethordDetails);
  *         description: Get a user
  */
 router.get('/getsubscriptionsdDetails', getsubscriptionsdDetails);
+
+/**
+ * @swagger
+ * /CreateUserSubcription:
+ *   post:
+ *     tags:
+ *       - Subscription
+ *     summary: create subcription
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userid:
+ *                 type: string
+ *                 description: User's id
+ *               subid:
+ *                 type: string
+ *                 description: subcription id
+ *               daysvalide:
+ *                 type: string
+ *                 description: days valide
+ *             required:
+ *               - userid
+ *               - subid
+ *               - daysvalide
+ *     responses:
+ *       200:
+ *         description: Create Subcription successfully 
+ *       400:
+ *         description: Invalid input data
+ *       409:
+ *         description: user not found
+ */
+router.post('/CreateUserSubcription', CreateUserSubcription);
 
 export default router;
