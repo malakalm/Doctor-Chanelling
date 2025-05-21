@@ -292,7 +292,6 @@ export const updateUserDetails = async (req, res) => {
   }
 };
 
-
 export const deleteUserAccount = async (req, res) => {
   const { id } = req.query;
 
