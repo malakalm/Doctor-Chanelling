@@ -4,11 +4,11 @@ export const getAvailableDoctors = async (req, res) => {
   try {
       const { id } = req.query;
     const sequelize = getDBConnection();
-    await sequelize.authenticate(); // connect only when this endpoint is hit
+    await sequelize.authenticate(); 
 
     const [results] = await sequelize.query('SELECT image,DoctorDetail.id, specialization, qualification, experience_years, hospital_name, phone, email, address, name  FROM DoctorDetail INNER JOIN AddDoctorToPations ON DoctorDetail.id = AddDoctorToPations.DoctorId  WHERE istatus = 1 AND Userid = ?'
     ,{replacements: [id],});
-    
+
     if (results.length === 0) {
       return res.status(404).json({ message: 'No available doctors found' });
     }
@@ -21,6 +21,8 @@ export const getAvailableDoctors = async (req, res) => {
     res.status(500).json({ error: 'Database error', details: err.message });
   }
 };
+
+
 
 export const getDoctorVenues = async (req, res) => {
   const { id } = req.query;
