@@ -5,7 +5,7 @@ export const getAvailableDoctors = async (req, res) => {
     const sequelize = getDBConnection();
     await sequelize.authenticate(); // connect only when this endpoint is hit
 
-    const [results] = await sequelize.query('SELECT id, specialization, qualification, experience_years, hospital_name, phone, email, address, name  FROM DoctorDetail WHERE istatus = 1');
+    const [results] = await sequelize.query('SELECT image,id, specialization, qualification, experience_years, hospital_name, phone, email, address, name  FROM DoctorDetail WHERE istatus = 1');
     if (results.length === 0) {
       return res.status(404).json({ message: 'No available doctors found' });
     }
@@ -35,7 +35,7 @@ export const getDoctorVenues = async (req, res) => {
       return res.status(404).json({ message: 'Venues not found' });
     }
 
-    res.status(200).json({ message: 'Venues found', data: results[0] });
+    res.status(200).json({ message: 'Venues found', data: results });
   } catch (err) {
     res.status(500).json({ error: 'Database error', details: err.message });
   }

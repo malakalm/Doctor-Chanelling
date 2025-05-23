@@ -67,7 +67,7 @@ export const CreateUserSubcription = async (req, res) => {
     );
 
     // Respond with success
-    res.status(200).json({ message: 'User successfully registered' });
+    res.status(200).json({ message: 'subscriptions successfully added' });
   } catch (err) {
     res.status(500).json({ message: 'Database error', error: err.message });
   }
