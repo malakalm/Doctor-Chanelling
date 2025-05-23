@@ -320,6 +320,13 @@ router.put('/setSubplane', setSubplane);
  *     tags:
  *        - Doctors
  *     summary: Get all Doctors
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: user ID
  *     responses:
  *       200:
  *         description: A list of Doctors       

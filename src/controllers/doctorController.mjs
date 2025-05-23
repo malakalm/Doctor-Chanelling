@@ -2,10 +2,12 @@ import getDBConnection from '../db.mjs';
 
 export const getAvailableDoctors = async (req, res) => {
   try {
+      const { id } = req.query;
     const sequelize = getDBConnection();
     await sequelize.authenticate(); // connect only when this endpoint is hit
 
-    const [results] = await sequelize.query('SELECT image,id, specialization, qualification, experience_years, hospital_name, phone, email, address, name  FROM DoctorDetail WHERE istatus = 1');
+    const [results] = await sequelize.query('SELECT image,id, specialization, qualification, experience_years, hospital_name, phone, email, address, name  FROM DoctorDetail INNER JOIN AddDoctorToPations ON DoctorDetail.id = AddDoctorToPations.DoctorId  WHERE istatus = 1 AND Userid = ?'
+    ,{replacements: [id],});
     if (results.length === 0) {
       return res.status(404).json({ message: 'No available doctors found' });
     }
