@@ -2,10 +2,12 @@ import getDBConnection from '../db.mjs';
 
 export const getAvailableDoctors = async (req, res) => {
   try {
+      const { id } = req.query;
     const sequelize = getDBConnection();
     await sequelize.authenticate(); // connect only when this endpoint is hit
 
-    const [results] = await sequelize.query('SELECT image,id, specialization, qualification, experience_years, hospital_name, phone, email, address, name  FROM DoctorDetail WHERE istatus = 1');
+    const [results] = await sequelize.query('SELECT image,id, specialization, qualification, experience_years, hospital_name, phone, email, address, name  FROM DoctorDetail INNER JOIN AddDoctorToPations ON DoctorDetail.id = AddDoctorToPations.DoctorId  WHERE istatus = 1 AND Userid = ?'
+    ,{replacements: [id],});
     if (results.length === 0) {
       return res.status(404).json({ message: 'No available doctors found' });
     }
@@ -38,5 +40,30 @@ export const getDoctorVenues = async (req, res) => {
     res.status(200).json({ message: 'Venues found', data: results });
   } catch (err) {
     res.status(500).json({ error: 'Database error', details: err.message });
+  }
+};
+
+
+export const AddDoctorToPations = async (req, res) => {
+  const { Doctorid, Userid} = req.body;
+
+
+
+  try {
+    const sequelize = getDBConnection();
+    await sequelize.authenticate();
+
+  
+    await sequelize.query(
+      'INSERT INTO AddDoctorToPations (Userid,DoctorId ) VALUES (?, ?)',
+      {
+        replacements: [Doctorid, Userid],
+      }
+    );
+
+    // Respond with success
+    res.status(200).json({ message: 'User Add successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Database error', error: err.message });
   }
 };
