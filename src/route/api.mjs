@@ -433,7 +433,7 @@ router.post('/CreateUserSubcription', CreateUserSubcription);
 
 /**
  * @swagger
- * /UserSignup:
+ * /AddDoctorToPations:
  *   post:
  *     tags:
  *       - Doctors
