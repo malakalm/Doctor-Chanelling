@@ -60,7 +60,7 @@ export const AddDoctorToPations = async (req, res) => {
     await sequelize.query(
       'INSERT INTO AddDoctorToPations (Userid,DoctorId ) VALUES (?, ?)',
       {
-        replacements: [Doctorid, Userid],
+        replacements: [Userid , Doctorid],
       }
     );
 
