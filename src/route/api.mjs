@@ -17,7 +17,8 @@ import {
 
 import { 
          getAvailableDoctors,
-         getDoctorVenues
+         getDoctorVenues,
+         AddDoctorToPations
         } from '../controllers/doctorController.mjs';
 
 import { upload } from '../middleware/multer.js';
@@ -429,5 +430,40 @@ router.get('/getsubscriptionsdDetails', getsubscriptionsdDetails);
  *         description: user not found
  */
 router.post('/CreateUserSubcription', CreateUserSubcription);
+
+/**
+ * @swagger
+ * /UserSignup:
+ *   post:
+ *     tags:
+ *       - Doctors
+ *     summary: Add Docter to user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Doctorid:
+ *                 type: string
+ *                 description: User's id
+ *               Userid:
+ *                 type: string
+ *                 description: Doctor's id
+ *             required:
+ *               - Doctorid
+ *               - Userid
+ *     responses:
+ *       200:
+ *         description: User Add successfully 
+ *       400:
+ *         description: Invalid input data
+ *       409:
+ *         description: Email or phone already exists
+ */
+router.post('/AddDoctorToPations', AddDoctorToPations);
+
+
 
 export default router;

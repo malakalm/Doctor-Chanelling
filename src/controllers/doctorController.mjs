@@ -42,3 +42,28 @@ export const getDoctorVenues = async (req, res) => {
     res.status(500).json({ error: 'Database error', details: err.message });
   }
 };
+
+
+export const AddDoctorToPations = async (req, res) => {
+  const { Doctorid, Userid} = req.body;
+
+
+
+  try {
+    const sequelize = getDBConnection();
+    await sequelize.authenticate();
+
+  
+    await sequelize.query(
+      'INSERT INTO AddDoctorToPations (Userid,DoctorId ) VALUES (?, ?)',
+      {
+        replacements: [Doctorid, Userid],
+      }
+    );
+
+    // Respond with success
+    res.status(200).json({ message: 'User Add successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Database error', error: err.message });
+  }
+};
